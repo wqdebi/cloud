@@ -31,6 +31,7 @@ void TcpClient::loadConfig()
         qDebug() << "IP: " << m_strIP << " Port: " << m_strPort;
     }else{
         QMessageBox::critical(this, "open config", "open config failed");
+
     }
 }
 
