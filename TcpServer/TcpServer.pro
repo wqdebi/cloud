@@ -17,13 +17,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    tcpclient.cpp
+    mytcpser.cpp \
+    tcpserver.cpp
 
 HEADERS += \
-    tcpclient.h
+    mytcpser.h \
+    tcpserver.h
 
 FORMS += \
-    tcpclient.ui
+    tcpserver.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -31,4 +33,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    config.qrc
+    server.qrc

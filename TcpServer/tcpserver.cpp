@@ -1,27 +1,29 @@
-#include "tcpclient.h"
-#include "ui_tcpclient.h"
+#include "tcpserver.h"
+#include "ui_tcpserver.h"
 #include <QByteArray>
 #include <QDebug> // 调试
 #include <QMessageBox> // 消息提示框
 #include <QHostAddress>
+#include <QFile>
+#include "mytcpser.h"
 
-TcpClient::TcpClient(QWidget *parent)
+TcpServer::TcpServer(QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::TcpClient)
+    , ui(new Ui::TcpServer)
 {
     ui->setupUi(this);
     loadConfig();
-    connect_server();
+    mytcpser::getInstance().listen(QHostAddress(m_strIP), m_strPort);
 }
 
-TcpClient::~TcpClient()
+TcpServer::~TcpServer()
 {
     delete ui;
 }
 
-void TcpClient::loadConfig()
+void TcpServer::loadConfig()
 {
-    QFile file(":/client.config"); // 文件对象，读取资源文件 ':' + "前缀" + "文件名"
+    QFile file(":/server.config"); // 文件对象，读取资源文件 ':' + "前缀" + "文件名"
     if(file.open(QIODevice::ReadOnly)){
         QByteArray baData = file.readAll();
         QString strDate = baData.toStdString().c_str();
@@ -35,17 +37,5 @@ void TcpClient::loadConfig()
         QMessageBox::critical(this, "open config", "open config failed");
 
     }
-}
-
-void TcpClient::connect_server()
-{
-    connect(&m_tcpsocket, SIGNAL(connected()),
-            this, SLOT(show_connect()));
-    m_tcpsocket.connectToHost(QHostAddress(m_strIP), m_strPort);
-}
-
-void TcpClient::show_connect()
-{
-    qDebug() << "TCP连接成功";
 }
 
