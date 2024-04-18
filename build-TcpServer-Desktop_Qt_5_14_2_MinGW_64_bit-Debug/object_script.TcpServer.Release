@@ -1,0 +1,12 @@
+release/main.o
+release/mytcpser.o
+release/mytcpsocket.o
+release/opedb.o
+release/protocal.o
+release/tcpserver.o
+release/qrc_database.o
+release/qrc_server.o
+release/moc_mytcpser.o
+release/moc_mytcpsocket.o
+release/moc_opedb.o
+release/moc_tcpserver.o

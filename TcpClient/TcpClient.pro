@@ -17,9 +17,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
+    protocal.cpp \
     tcpclient.cpp
 
 HEADERS += \
+    protocal.h \
     tcpclient.h
 
 FORMS += \

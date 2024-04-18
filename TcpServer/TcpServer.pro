@@ -1,4 +1,4 @@
-QT       += core gui network
+QT       += core gui network sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -18,10 +18,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     mytcpser.cpp \
+    mytcpsocket.cpp \
+    opedb.cpp \
+    protocal.cpp \
     tcpserver.cpp
 
 HEADERS += \
     mytcpser.h \
+    mytcpsocket.h \
+    opedb.h \
+    protocal.h \
     tcpserver.h
 
 FORMS += \
@@ -33,4 +39,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
+    database.qrc \
     server.qrc

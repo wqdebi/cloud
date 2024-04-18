@@ -1,0 +1,12 @@
+debug/main.o
+debug/mytcpser.o
+debug/mytcpsocket.o
+debug/opedb.o
+debug/protocal.o
+debug/tcpserver.o
+debug/qrc_database.o
+debug/qrc_server.o
+debug/moc_mytcpser.o
+debug/moc_mytcpsocket.o
+debug/moc_opedb.o
+debug/moc_tcpserver.o

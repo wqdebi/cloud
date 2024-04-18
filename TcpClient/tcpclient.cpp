@@ -4,6 +4,7 @@
 #include <QDebug> // 调试
 #include <QMessageBox> // 消息提示框
 #include <QHostAddress>
+#include "protocal.h"
 
 TcpClient::TcpClient(QWidget *parent)
     : QWidget(parent)
@@ -49,3 +50,19 @@ void TcpClient::show_connect()
     qDebug() << "TCP连接成功";
 }
 
+
+void TcpClient::on_send_pb_clicked()
+{
+    QString str = ui->lineEdit->text();
+    if(!str.isEmpty()){
+        PDU* pdu = mkPDU(str.size());
+        pdu->UiMsgType = 8888;
+        memcpy(pdu->caMsg, str.toStdString().c_str(),str.size());
+        m_tcpsocket.write((char *)pdu, pdu->uilPDULen);
+        free(pdu);
+        pdu = NULL;
+    }else{
+        QMessageBox::warning(this, "消息发送", "发送信息不能为空");
+    }
+
+}

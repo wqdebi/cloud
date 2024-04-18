@@ -276,9 +276,11 @@ Makefile: ../TcpServer/TcpServer.pro C:/Qt/Qt5.14.2/5.14.2/mingw73_64/mkspecs/wi
 		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/lib/Qt5Widgets.prl \
 		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/lib/Qt5Gui.prl \
 		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/lib/Qt5Network.prl \
+		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/lib/Qt5Sql.prl \
 		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/lib/Qt5Core.prl \
 		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/lib/qtmain.prl \
 		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/mkspecs/features/build_pass.prf \
+		../TcpServer/database.qrc \
 		../TcpServer/server.qrc
 	$(QMAKE) -o Makefile ..\TcpServer\TcpServer.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
 C:/Qt/Qt5.14.2/5.14.2/mingw73_64/mkspecs/features/spec_pre.prf:
@@ -487,9 +489,11 @@ C:/Qt/Qt5.14.2/5.14.2/mingw73_64/mkspecs/features/lex.prf:
 C:/Qt/Qt5.14.2/5.14.2/mingw73_64/lib/Qt5Widgets.prl:
 C:/Qt/Qt5.14.2/5.14.2/mingw73_64/lib/Qt5Gui.prl:
 C:/Qt/Qt5.14.2/5.14.2/mingw73_64/lib/Qt5Network.prl:
+C:/Qt/Qt5.14.2/5.14.2/mingw73_64/lib/Qt5Sql.prl:
 C:/Qt/Qt5.14.2/5.14.2/mingw73_64/lib/Qt5Core.prl:
 C:/Qt/Qt5.14.2/5.14.2/mingw73_64/lib/qtmain.prl:
 C:/Qt/Qt5.14.2/5.14.2/mingw73_64/mkspecs/features/build_pass.prf:
+../TcpServer/database.qrc:
 ../TcpServer/server.qrc:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ..\TcpServer\TcpServer.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
