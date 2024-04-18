@@ -31,3 +31,8 @@ OPeDb &OPeDb::getInstance()
     static OPeDb instance;
     return instance;
 }
+
+OPeDb::~OPeDb()
+{
+    m_db.close();
+}

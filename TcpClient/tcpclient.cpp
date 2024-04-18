@@ -11,6 +11,7 @@ TcpClient::TcpClient(QWidget *parent)
     , ui(new Ui::TcpClient)
 {
     ui->setupUi(this);
+    resize(500, 250);
     loadConfig();
     connect_server();
 }
@@ -51,18 +52,57 @@ void TcpClient::show_connect()
 }
 
 
-void TcpClient::on_send_pb_clicked()
+//void TcpClient::on_send_pb_clicked()
+//{
+//    QString str = ui->lineEdit->text();
+//    if(!str.isEmpty()){
+//        PDU* pdu = mkPDU(str.size());
+//        pdu->UiMsgType = 8888;
+//        memcpy(pdu->caMsg, str.toStdString().c_str(),str.size());
+//        m_tcpsocket.write((char *)pdu, pdu->uilPDULen);
+//        free(pdu);
+//        pdu = NULL;
+//    }else{
+//        QMessageBox::warning(this, "消息发送", "发送信息不能为空");
+//    }
+
+//}
+
+
+
+
+void TcpClient::on_login_pb_clicked()
 {
-    QString str = ui->lineEdit->text();
-    if(!str.isEmpty()){
-        PDU* pdu = mkPDU(str.size());
-        pdu->UiMsgType = 8888;
-        memcpy(pdu->caMsg, str.toStdString().c_str(),str.size());
-        m_tcpsocket.write((char *)pdu, pdu->uilPDULen);
+
+}
+
+void TcpClient::on_regist_pd_clicked()
+{
+    QString strName = ui -> name_le -> text(); // 获取用户名和密码
+    QString strPwd = ui -> pwd_le -> text();
+    // 合理性判断
+    if(!strName.isEmpty() && !strPwd.isEmpty())
+    {
+        // 注册信息用户名和密码将通过caData[64]传输
+        PDU *pdu = mkPDU(0); // 实际消息体积为0
+        pdu->UiMsgType = ENUM_MSG_TYPE_REGIST_REQUEST; // 设置为注册请求消息类型
+        // 拷贝用户名和密码信息到caData
+        memcpy(pdu->caData, strName.toStdString().c_str(), 32); // 由于数据库设定的32位，所以最多只拷贝前32位
+        memcpy(pdu->caData + 32, strPwd.toStdString().c_str(), 32);
+        // qDebug() << pdu -> uiMsgType << " " << pdu -> caData << " " << pdu -> caData + 32;
+        m_tcpsocket.write((char*)pdu, pdu->uilPDULen); // 发送消息
+
+        // 释放空间
         free(pdu);
         pdu = NULL;
-    }else{
-        QMessageBox::warning(this, "消息发送", "发送信息不能为空");
     }
+    else
+    {
+        QMessageBox::critical(this, "注册", "注册失败：用户名或密码为空！");
+    }
+}
+
+void TcpClient::on_cancel_pb_clicked()
+{
 
 }

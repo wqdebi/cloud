@@ -16,6 +16,7 @@ private:
 public:
     void init();
     static OPeDb& getInstance();
+    ~OPeDb();
 
 
 signals:
