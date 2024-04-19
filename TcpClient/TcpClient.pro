@@ -16,15 +16,24 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    book.cpp \
+    friend.cpp \
     main.cpp \
+    online.cpp \
+    opewidget.cpp \
     protocal.cpp \
     tcpclient.cpp
 
 HEADERS += \
+    book.h \
+    friend.h \
+    online.h \
+    opewidget.h \
     protocal.h \
     tcpclient.h
 
 FORMS += \
+    online.ui \
     tcpclient.ui
 
 # Default rules for deployment.
