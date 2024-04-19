@@ -41,6 +41,27 @@ void MyTcpSocket::recvMsg()
         respdu = NULL;
         break;
     }
+    case ENUM_MSG_TYPE_LOGIN_REQUEST:{
+        char caName[32] = {'\0'};
+        char caPwd[32] = {'\0'};
+        strncpy(caName, pdu->caData, 32);
+        strncpy(caPwd, pdu->caData+32, 32);
+        bool ret = OPeDb::getInstance().handleLogin(caName, caPwd);
+        PDU* respdu = mkPDU(0);
+        respdu->UiMsgType = ENUM_MSG_TYPE_LOGIN_RESPOND;
+        if(ret){
+            strcpy(respdu->caData, LOGIN_OK);
+        }else{
+            strcpy(respdu->caData, LOGIN_FAILED);
+        }
+        write((char*)respdu, respdu->uilPDULen); // 发送消息
+
+        // 释放空间
+        free(respdu);
+        respdu = NULL;
+        break;
+        break;
+    }
     default:
             break;
     }

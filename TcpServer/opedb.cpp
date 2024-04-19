@@ -45,3 +45,20 @@ bool OPeDb::handleRegist(const char *Name, const char *Pwd)
     QSqlQuery query;
     return  query.exec(str);
 }
+
+bool OPeDb::handleLogin(const char *Name, const char *Pwd)
+{
+    if(Name == nullptr || Pwd == nullptr)
+        return false;
+    QString str = QString("select * from usrInfo where name=\'%1\' and pwd=\'%2\' and online=0").arg(Name).arg(Pwd);
+    QSqlQuery query;
+    query.exec(str);
+    if(query.next()){
+        QString str = QString("update usrInfo set online = 1 where name=\'%1\' and  pwd=\'%2\'").arg(Name).arg(Pwd);
+        QSqlQuery query;
+        query.exec(str);
+        return true;
+    }else{
+        return false;
+    }
+}

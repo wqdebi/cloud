@@ -10,6 +10,9 @@ using Uint = unsigned;
 #define REGIST_OK "regist ok"                            // 注册
 #define REGIST_FAILED "regist failed"
 
+#define LOGIN_OK "login ok"                            // 登录
+#define LOGIN_FAILED "login failed"
+
 enum ENUM_MSG_TYPE
 {
     ENUM_MSG_TYPE_MIN = 0,
