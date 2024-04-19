@@ -5,6 +5,9 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+#define REGIST_OK "regist ok"                            // 注册
+#define REGIST_FAILED "regist failed"
+
 using Uint = unsigned;
 
 enum ENUM_MSG_TYPE

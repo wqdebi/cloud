@@ -15,11 +15,11 @@ class TcpClient : public QWidget
 
 public slots:
     void show_connect();
+    void recvMsg();
 public:
     TcpClient(QWidget *parent = nullptr);
     ~TcpClient();
     void loadConfig(); // 加载配置文件信息
-    void connect_server();
 
 
 

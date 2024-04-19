@@ -13,7 +13,11 @@ TcpClient::TcpClient(QWidget *parent)
     ui->setupUi(this);
     resize(500, 250);
     loadConfig();
-    connect_server();
+    connect(&m_tcpsocket, SIGNAL(connected()),
+            this, SLOT(show_connect()));
+    connect(&m_tcpsocket, SIGNAL(readyRead()),
+            this, SLOT(recvMsg()));
+    m_tcpsocket.connectToHost(QHostAddress(m_strIP), m_strPort);
 }
 
 TcpClient::~TcpClient()
@@ -39,16 +43,35 @@ void TcpClient::loadConfig()
     }
 }
 
-void TcpClient::connect_server()
-{
-    connect(&m_tcpsocket, SIGNAL(connected()),
-            this, SLOT(show_connect()));
-    m_tcpsocket.connectToHost(QHostAddress(m_strIP), m_strPort);
-}
 
 void TcpClient::show_connect()
 {
     qDebug() << "TCP连接成功";
+}
+
+void TcpClient::recvMsg()
+{
+    qDebug() << m_tcpsocket.bytesAvailable();
+    uint uiPDUlen = 0;
+    m_tcpsocket.read((char *)&uiPDUlen, sizeof(uint));
+    uint uiMsgLen = uiPDUlen - sizeof(PDU);
+    PDU* pdu = mkPDU(uiMsgLen);
+    m_tcpsocket.read((char *)pdu + sizeof(uint), uiPDUlen - sizeof(uint));
+//    qDebug() << pdu->UiMsgType << (char *)pdu->caMsg;
+    switch(pdu->UiMsgType){
+    case ENUM_MSG_TYPE_REGIST_RESPOND:{
+        if(0 == strcmp(pdu->caData, REGIST_OK)){
+            QMessageBox::information(this, "注册", REGIST_OK);
+        }else if(0 == strcmp(pdu->caData, REGIST_FAILED)){
+            QMessageBox::warning(this, "注册", REGIST_FAILED);
+        }
+        break;
+    }
+    default:
+            break;
+    }
+    free(pdu);
+    pdu = NULL;
 }
 
 

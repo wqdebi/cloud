@@ -17,6 +17,7 @@ public:
     void init();
     static OPeDb& getInstance();
     ~OPeDb();
+    bool handleRegist(const char *Name, const char *Pwd);
 
 
 signals:

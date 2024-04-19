@@ -7,6 +7,9 @@
 
 using Uint = unsigned;
 
+#define REGIST_OK "regist ok"                            // 注册
+#define REGIST_FAILED "regist failed"
+
 enum ENUM_MSG_TYPE
 {
     ENUM_MSG_TYPE_MIN = 0,

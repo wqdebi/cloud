@@ -36,3 +36,12 @@ OPeDb::~OPeDb()
 {
     m_db.close();
 }
+
+bool OPeDb::handleRegist(const char *Name, const char *Pwd)
+{
+    if(Name == nullptr || Pwd == nullptr)
+        return false;
+    QString str = QString("insert into usrInfo(name, pwd) values(\'%1\', \'%2\')").arg(Name).arg(Pwd);
+    QSqlQuery query;
+    return  query.exec(str);
+}
