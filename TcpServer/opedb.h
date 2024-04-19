@@ -19,6 +19,7 @@ public:
     ~OPeDb();
     bool handleRegist(const char *Name, const char *Pwd);
     bool handleLogin(const char *Name, const char *Pwd);
+    void handleOffline(const char *Name);
 
 
 signals:

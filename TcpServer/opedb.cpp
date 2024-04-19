@@ -62,3 +62,12 @@ bool OPeDb::handleLogin(const char *Name, const char *Pwd)
         return false;
     }
 }
+
+void OPeDb::handleOffline(const char *Name)
+{
+    if(Name == nullptr)
+        return;
+    QString str = QString("update usrInfo set online = 0 where name=\'%1\'").arg(Name);
+    QSqlQuery query;
+    query.exec(str);
+}
