@@ -8,14 +8,14 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    OpeWidget w;
-    w.show();
+//    OpeWidget w;
+//    w.show();
 //    Friend w;
 //    w.show();
 //    Online w;
 //    w.show();
 
-//    TcpClient w;
-//    w.show();
+    TcpClient::getinstance().show();
+
     return a.exec();
 }

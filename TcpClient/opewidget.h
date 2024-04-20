@@ -10,8 +10,12 @@
 class OpeWidget : public QWidget
 {
     Q_OBJECT
-public:
+private:
     explicit OpeWidget(QWidget *parent = nullptr);
+
+public:
+    static OpeWidget &getInstance();
+    Friend *getFriend();
 
 signals:
 

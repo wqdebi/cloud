@@ -43,6 +43,17 @@ void TcpClient::loadConfig()
     }
 }
 
+TcpClient &TcpClient::getinstance()
+{
+    static TcpClient instance;
+    return instance;
+}
+
+QTcpSocket &TcpClient::getTcpSocket()
+{
+    return m_tcpsocket;
+}
+
 
 void TcpClient::show_connect()
 {
@@ -58,6 +69,7 @@ void TcpClient::recvMsg()
     PDU* pdu = mkPDU(uiMsgLen);
     m_tcpsocket.read((char *)pdu + sizeof(uint), uiPDUlen - sizeof(uint));
 //    qDebug() << pdu->UiMsgType << (char *)pdu->caMsg;
+//    qDebug() << "ok" <<pdu->UiMsgType;
     switch(pdu->UiMsgType){
     case ENUM_MSG_TYPE_REGIST_RESPOND:{
         if(0 == strcmp(pdu->caData, REGIST_OK)){
@@ -70,9 +82,16 @@ void TcpClient::recvMsg()
     case ENUM_MSG_TYPE_LOGIN_RESPOND:{
         if(0 == strcmp(pdu->caData, LOGIN_OK)){
             QMessageBox::information(this, "登录", LOGIN_OK);
+            OpeWidget::getInstance().show();
+            this->hide();
+
         }else if(0 == strcmp(pdu->caData, LOGIN_FAILED)){
             QMessageBox::warning(this, "登录", LOGIN_FAILED);
         }
+        break;
+    }
+    case ENUM_MSG_TYPE_ONLINE_USERS_RESPOND:{
+        OpeWidget::getInstance().getFriend()->showAllOnlineUsr(pdu);
         break;
     }
     default:

@@ -22,3 +22,14 @@ OpeWidget::OpeWidget(QWidget *parent) : QWidget(parent)
     connect(m_pListW, SIGNAL(currentRowChanged(int)),
             m_pSW, SLOT(setCurrentIndex(int)));
 }
+
+OpeWidget &OpeWidget::getInstance()
+{
+    static OpeWidget ope;
+    return ope;
+}
+
+Friend *OpeWidget::getFriend()
+{
+    return m_pFriend;
+}
