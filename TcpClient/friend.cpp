@@ -1,5 +1,7 @@
 #include "friend.h"
 #include "tcpclient.h"
+#include <QInputDialog>
+#include <QDebug>
 
 Friend::Friend(QWidget *parent) : QWidget(parent)
 {
@@ -43,6 +45,8 @@ Friend::Friend(QWidget *parent) : QWidget(parent)
 
     connect(m_pShowOnlineUsrPB, SIGNAL(clicked(bool)),
             this, SLOT(showOnline()));
+    connect(m_pSearchUsrPB, SIGNAL(clicked(bool)),
+            this, SLOT(searchUsr()));
 }
 
 void Friend::showAllOnlineUsr(PDU *pdu)
@@ -66,5 +70,18 @@ void Friend::showOnline()
 
     }else{
         m_pOnline->hide();
+    }
+}
+
+void Friend::searchUsr()
+{
+    m_strSearchName = QInputDialog::getText(this, "搜索", "用户名");
+    if(!m_strSearchName.isEmpty()){
+        PDU *pdu = mkPDU(0);
+        pdu->UiMsgType = ENUM_MSG_TYPE_SEARCH_USER_REQUEST;
+        memcpy(pdu->caData, m_strSearchName.toStdString().c_str(), m_strSearchName.size());
+        TcpClient::getinstance().getTcpSocket().write((char *)pdu, pdu->uilPDULen);
+        free(pdu);
+        pdu = nullptr;
     }
 }

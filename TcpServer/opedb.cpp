@@ -84,3 +84,23 @@ QStringList OPeDb::handleAllOnline()
     }
     return result;
 }
+
+int OPeDb::handleSearchUsr(const char *name)
+{
+    if(NULL == name){
+        return -1;
+    }
+    QString data = QString("select * from usrInfo where name = '\%1\'").arg(name);
+    QSqlQuery query;
+    query.exec(data);
+    if(query.next()){
+        int ret = query.value(0).toInt();
+        if(ret == 1){
+            return 1;
+        }else{
+            return 0;
+        }
+    }else{
+        return -1;
+    }
+}

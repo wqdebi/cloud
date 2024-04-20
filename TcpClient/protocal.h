@@ -13,6 +13,11 @@ using Uint = unsigned;
 #define LOGIN_OK "login ok"                            // 登录
 #define LOGIN_FAILED "login failed"
 
+// 好友操作
+#define SEARCH_USER_OK "search user ok"                  // 查找
+#define SEARCH_USER_OFFLINE "user offline"
+#define SEARCH_USER_EMPTY "no such people"
+
 enum ENUM_MSG_TYPE
 {
     ENUM_MSG_TYPE_MIN = 0,
