@@ -173,3 +173,26 @@ int OPeDb::getIdByUserName(const char *name)
         return -1; // 不存在该用户
     }
 }
+
+QStringList OPeDb::handleFlushFriend(const char *name)
+{
+    QStringList strFriendList;
+    strFriendList.clear();
+    if(NULL == name){
+        return strFriendList;
+    }
+    QString data = QString("select name from usrInfo where online = 1 and id in (select id from friend where friendId = (select id from usrInfo where name = \'%1\'))").arg(name);
+    QSqlQuery query;
+    query.exec(data);
+    while(query.next()){
+        strFriendList.append(query.value(0).toString());
+        qDebug() << query.value(0).toString();
+    }
+    data = QString("select name from usrInfo where online = 1 and id in (select friendId from friend where id = (select id from usrInfo where name = \'%1\'))").arg(name);
+    query.exec(data);
+    while(query.next()){
+        strFriendList.append(query.value(0).toString());
+        qDebug() << query.value(0).toString();
+    }
+    return strFriendList;
+}
