@@ -18,6 +18,13 @@ using Uint = unsigned;
 #define SEARCH_USER_OFFLINE "user offline"
 #define SEARCH_USER_EMPTY "no such people"
 
+#define ADD_FRIEND_OK "add friend ok"                    // 添加好友 1对方存在在线，0对方存在不在线，2不存在，3已是好友，4请求错误
+#define ADD_FRIEND_OFFLINE "added friend offline"
+#define ADD_FRIEND_EMPTY "no such people"
+#define ADD_FRIEND_EXIST "added friend already exist"
+
+#define UNKNOWN_ERROR "unknown error"                    // 通用未知错误
+
 enum ENUM_MSG_TYPE
 {
     ENUM_MSG_TYPE_MIN = 0,

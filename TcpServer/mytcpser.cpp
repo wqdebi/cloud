@@ -22,6 +22,19 @@ void mytcpser::incomingConnection(qintptr handle)
             this, SLOT(deleteSocket(MyTcpSocket *)));
 }
 
+void mytcpser::resend(const char *pername, PDU *pdu)
+{
+    if(NULL == pername || pdu == nullptr){
+        return;
+    }
+    QString strName = pername;
+    for(int i = 0; i < m_tcpSocketList.size(); ++i){
+        if(strName == m_tcpSocketList.at(i)->getName()){
+            m_tcpSocketList.at(i)->write((char *)pdu, pdu->uilPDULen);
+        }
+    }
+}
+
 void mytcpser::deleteSocket(MyTcpSocket *mysocket)
 {
     QList<MyTcpSocket *>::iterator iter = m_tcpSocketList.begin();

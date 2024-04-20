@@ -25,7 +25,7 @@ public:
     void loadConfig(); // 加载配置文件信息
     static TcpClient& getinstance();
     QTcpSocket &getTcpSocket();
-
+    QString loginName();
 
 
 private slots:
@@ -44,5 +44,7 @@ private:
     QString m_strIP; //IP地址
     quint16 m_strPort; //端口
     QTcpSocket m_tcpsocket;
+
+    QString m_strLoginName;
 };
 #endif // TCPCLIENT_H

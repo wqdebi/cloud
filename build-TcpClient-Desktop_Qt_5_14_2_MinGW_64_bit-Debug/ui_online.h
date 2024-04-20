@@ -46,6 +46,7 @@ public:
         new QListWidgetItem(online_lw);
         new QListWidgetItem(online_lw);
         new QListWidgetItem(online_lw);
+        new QListWidgetItem(online_lw);
         online_lw->setObjectName(QString::fromUtf8("online_lw"));
 
         horizontalLayout->addWidget(online_lw);
@@ -93,6 +94,8 @@ public:
         ___qlistwidgetitem3->setText(QCoreApplication::translate("Online", "4", nullptr));
         QListWidgetItem *___qlistwidgetitem4 = online_lw->item(4);
         ___qlistwidgetitem4->setText(QCoreApplication::translate("Online", "5", nullptr));
+        QListWidgetItem *___qlistwidgetitem5 = online_lw->item(5);
+        ___qlistwidgetitem5->setText(QCoreApplication::translate("Online", "rose", nullptr));
         online_lw->setSortingEnabled(__sortingEnabled);
 
         addFriend_pb->setText(QCoreApplication::translate("Online", "\345\212\240\345\245\275\345\217\213", nullptr));

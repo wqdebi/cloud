@@ -104,3 +104,72 @@ int OPeDb::handleSearchUsr(const char *name)
         return -1;
     }
 }
+
+int OPeDb::handleAddFriend(const char *perName, const char *Name)
+{
+    if(NULL == perName || Name == NULL){
+        return -1;
+    }
+    QString data = QString("select * from friend where (id = (select id from usrInfo where name=\'%1\') and friendId = (select id from usrInfo where name = \'%2\')) "
+                           "or (id = (select id from usrInfo where name=\'%3\') and friendId = (select id from usrInfo where name = \'%4\'))").arg(perName).arg(Name).arg(Name).arg(perName);
+    QSqlQuery query;
+    query.exec(data);
+    if(query.next()){
+        return 0;
+    }else{
+        QString data = QString("select online from usrInfo where name = '\%1\'").arg(perName);
+        QSqlQuery query1;
+        query1.exec(data);
+        if(query1.next()){
+            int ret = query1.value(0).toInt();
+            if(ret == 1){
+                return 1;
+            }else{
+                return 2;
+            }
+        }else{
+            return 3;
+        }
+    }
+}
+
+bool OPeDb::handleAddFriendAgree(const char *addedName, const char *sourceName)
+{
+    if(NULL == addedName || NULL == sourceName)
+    {
+        qDebug() << "handleAddFriendAgree: name is NULL";
+        return false;
+    }
+
+    int sourceUserId = -1, addedUserId = -1;
+    // 查找用户对应id
+    addedUserId = getIdByUserName(addedName);
+    sourceUserId = getIdByUserName(sourceName);
+
+    QString strQuery = QString("insert into friend values(%1, %2) ").arg(sourceUserId).arg(addedUserId);
+    QSqlQuery query;
+
+    qDebug() << "handleAddFriendAgree " << strQuery;
+
+    return query.exec(strQuery);
+}
+
+int OPeDb::getIdByUserName(const char *name)
+{
+    if(NULL == name)
+    {
+        return -1;
+    }
+    QString strQuery = QString("select id from usrInfo where name = \'%1\' ").arg(name);
+    QSqlQuery query;
+
+    query.exec(strQuery);
+    if(query.next())
+    {
+        return query.value(0).toInt();
+    }
+    else
+    {
+        return -1; // 不存在该用户
+    }
+}

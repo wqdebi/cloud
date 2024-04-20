@@ -23,6 +23,9 @@ public:
     void handleOffline(const char *Name);
     QStringList handleAllOnline();
     int handleSearchUsr(const char *name);
+    int handleAddFriend(const char *perName, const char *Name);
+    bool handleAddFriendAgree(const char *addedName, const char *sourceName);
+    int getIdByUserName(const char *name);                // 根据用户名获取用户id
 
 signals:
 

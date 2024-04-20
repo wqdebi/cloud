@@ -5,6 +5,7 @@
 #include <QMessageBox> // 消息提示框
 #include <QHostAddress>
 #include "protocal.h"
+#include <QCoreApplication>
 
 TcpClient::TcpClient(QWidget *parent)
     : QWidget(parent)
@@ -52,6 +53,11 @@ TcpClient &TcpClient::getinstance()
 QTcpSocket &TcpClient::getTcpSocket()
 {
     return m_tcpsocket;
+}
+
+QString TcpClient::loginName()
+{
+    return m_strLoginName;
 }
 
 
@@ -107,6 +113,43 @@ void TcpClient::recvMsg()
         }
         break;
     }
+    case ENUM_MSG_TYPE_ADD_FRIEND_REQUEST:{
+        char sourceName[32]; // 获取发送方用户名
+        strncpy(sourceName, pdu -> caData + 32, 32);
+        int ret = QMessageBox::information(this, "好友申请", QString("%1 想添加您为好友，是否同意？").arg(sourceName),
+                                 QMessageBox::Yes, QMessageBox::No); // 后面两个参数是为QMessage默认支持两个按钮来设置枚举值
+        PDU* resPdu = mkPDU(0);
+
+        strncpy(resPdu -> caData, pdu -> caData, 32); // 被加好友者用户名
+        strncpy(resPdu -> caData + 32, pdu -> caData + 32, 32); // 加好友者用户名
+        // qDebug() << "同意加好友吗？" << resPdu -> caData << " " << resPdu -> caData + 32;
+        if(ret == QMessageBox::Yes) // 同意加好友
+        {
+            resPdu->UiMsgType = ENUM_MSG_TYPE_ADD_FRIEND_AGREE;
+        }
+        else
+        {
+            resPdu->UiMsgType = ENUM_MSG_TYPE_ADD_FRIEND_REJECT;
+        }
+        m_tcpsocket.write((char*)resPdu, resPdu->uilPDULen); // 发送给服务器消息，由服务器写入数据库并转发给用户
+        free(resPdu);
+        resPdu=nullptr;
+        break;
+    }
+    case ENUM_MSG_TYPE_ADD_FRIEND_RESPOND:{
+        QMessageBox::information(this, "添加好友", pdu->caData);
+        break;
+    }
+    case ENUM_MSG_TYPE_ADD_FRIEND_AGREE: // 对方同意加好友
+    {
+        QMessageBox::information(this, "添加好友", QString("%1 已同意您的好友申请!").arg(pdu -> caData));
+        break;
+    }
+    case ENUM_MSG_TYPE_ADD_FRIEND_REJECT: // 对方拒绝加好友
+    {
+        QMessageBox::information(this, "添加好友", QString("%1 已拒绝您的好友申请！").arg(pdu -> caData));
+        break;
+    }
     default:
         break;
     }
@@ -141,6 +184,7 @@ void TcpClient::on_login_pb_clicked()
     // 合理性判断
     if(!strName.isEmpty() && !strPwd.isEmpty())
     {
+        m_strLoginName = strName;
         // 注册信息用户名和密码将通过caData[64]传输
         PDU *pdu = mkPDU(0); // 实际消息体积为0
         pdu->UiMsgType = ENUM_MSG_TYPE_LOGIN_REQUEST; // 设置为注册请求消息类型
