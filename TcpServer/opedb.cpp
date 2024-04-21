@@ -196,3 +196,16 @@ QStringList OPeDb::handleFlushFriend(const char *name)
     }
     return strFriendList;
 }
+
+bool OPeDb::handleDelFriend(const char *perName, const char *Name)
+{
+    if(NULL == perName || NULL == Name){
+        return false;
+    }
+    QString data = QString("delete from friend where id = (select id from usrInfo where name = '\%1\') and friendId = (select id from usrInfo where name = '\%2\')").arg(Name).arg(perName);
+    QSqlQuery query;
+    query.exec(data);
+    data = QString("delete from friend where id = (select id from usrInfo where name = '\%1\') and friendId = (select id from usrInfo where name = '\%2\')").arg(perName).arg(Name);
+    query.exec(data);
+    return true;
+}

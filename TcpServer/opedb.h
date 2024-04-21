@@ -27,6 +27,7 @@ public:
     bool handleAddFriendAgree(const char *addedName, const char *sourceName);
     int getIdByUserName(const char *name);                // 根据用户名获取用户id
     QStringList handleFlushFriend(const char *name);
+    bool handleDelFriend(const char *perName, const char *Name);
 
 signals:
 

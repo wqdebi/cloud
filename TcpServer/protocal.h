@@ -21,6 +21,9 @@
 #define ADD_FRIEND_EMPTY "no such people"
 #define ADD_FRIEND_EXIST "added friend already exist"
 
+#define DEL_FRIEND_OK "delete friend ok"                 // 删除好友
+#define DEL_FRIEND_FAILED "delete friend failed"
+
 #define UNKNOWN_ERROR "unknown error"                    // 通用未知错误
 
 using Uint = unsigned;

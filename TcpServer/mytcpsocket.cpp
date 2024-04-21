@@ -184,6 +184,25 @@ void MyTcpSocket::recvMsg()
         respdu = nullptr;
         break;
     }
+    case ENUM_MSG_TYPE_DELETE_FRIEND_REQUEST:{
+        char caSelfName[32] = {'\0'};
+        char caFriendName[32] = {'\0'};
+        // 拷贝读取的信息
+        strncpy(caSelfName, pdu -> caData, 32);
+        strncpy(caFriendName, pdu -> caData + 32, 32);
+        OPeDb::getInstance().handleDelFriend(caSelfName, caFriendName);
+
+        PDU *respdu = mkPDU(0);
+        respdu->UiMsgType = ENUM_MSG_TYPE_DELETE_FRIEND_RESPOND;
+        strcpy(respdu->caData, DEL_FRIEND_OK);
+        write((char *)respdu, respdu->uilPDULen);
+        free(respdu);
+        respdu = nullptr;
+
+        mytcpser::getInstance().resend(caFriendName, pdu);
+
+        break;
+    }
     default:
         break;
     }

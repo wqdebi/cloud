@@ -49,6 +49,8 @@ Friend::Friend(QWidget *parent) : QWidget(parent)
             this, SLOT(searchUsr()));
     connect(m_pFlushFriendPB, SIGNAL(clicked(bool)),
             this, SLOT(flushFriend()));
+    connect(m_pDelFriendPB, SIGNAL(clicked(bool)),
+            this, SLOT(delFriend()));
 }
 
 void Friend::showAllOnlineUsr(PDU *pdu)
@@ -112,4 +114,20 @@ void Friend::flushFriend()
     TcpClient::getinstance().getTcpSocket().write((char *)pdu, pdu->uilPDULen);
     free(pdu);
     pdu = nullptr;
+}
+
+void Friend::delFriend()
+{
+    if(NULL != m_pFriendListWidget->currentItem()){
+        QString strFriendName = m_pFriendListWidget->currentItem()->text();
+        PDU *pdu = mkPDU(0);
+        pdu->UiMsgType = ENUM_MSG_TYPE_DELETE_FRIEND_REQUEST;
+        QString strSelfName = TcpClient::getinstance().loginName();
+        memcpy(pdu->caData, strSelfName.toStdString().c_str(), strSelfName.size());
+        memcpy(pdu->caData + 32, strFriendName.toStdString().c_str(), strSelfName.size());
+        TcpClient::getinstance().getTcpSocket().write((char *)pdu, pdu->uilPDULen);
+        free(pdu);
+        pdu = NULL;
+    }
+
 }
