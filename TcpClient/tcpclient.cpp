@@ -6,6 +6,7 @@
 #include <QHostAddress>
 #include "protocal.h"
 #include <QCoreApplication>
+#include "privatechat.h"
 
 TcpClient::TcpClient(QWidget *parent)
     : QWidget(parent)
@@ -162,6 +163,17 @@ void TcpClient::recvMsg()
     }
     case ENUM_MSG_TYPE_DELETE_FRIEND_RESPOND:{
         QMessageBox::information(this, "删除好友", "删除好友成功");
+        break;
+    }
+    case ENUM_MSG_TYPE_PRIVATE_CHAT_REQUEST:{
+        if(PrivateChat::getinstance().isHidden()){
+            PrivateChat::getinstance().show();
+        }
+        char perName[32] = {'\0'};
+        memcpy(perName, pdu->caData, 32);
+        QString strSendName = perName;
+        PrivateChat::getinstance().setChatName(strSendName);
+        PrivateChat::getinstance().updataMsg(pdu);
         break;
     }
     default:

@@ -2,6 +2,8 @@
 #include "tcpclient.h"
 #include <QInputDialog>
 #include <QDebug>
+#include "privatechat.h"
+#include <QMessageBox>
 
 Friend::Friend(QWidget *parent) : QWidget(parent)
 {
@@ -51,6 +53,8 @@ Friend::Friend(QWidget *parent) : QWidget(parent)
             this, SLOT(flushFriend()));
     connect(m_pDelFriendPB, SIGNAL(clicked(bool)),
             this, SLOT(delFriend()));
+    connect(m_pPrivateChatPB, SIGNAL(clicked(bool)),
+            this, SLOT(privateChat()));
 }
 
 void Friend::showAllOnlineUsr(PDU *pdu)
@@ -69,7 +73,7 @@ void Friend::updateFriendList(PDU *pdu)
     uint uiSize = pdu->uiMsgLen / 32;
     char caName[32] = {'\0'};
     m_pFriendListWidget->clear();
-    for(int i = 0; i < uiSize; ++i){
+    for(int i = 0; i < (int)uiSize; ++i){
         memcpy(caName, (char *)(pdu->caMsg) + i * 32, 32);
         m_pFriendListWidget->addItem(caName);
     }
@@ -130,4 +134,17 @@ void Friend::delFriend()
         pdu = NULL;
     }
 
+}
+
+void Friend::privateChat()
+{
+    if(NULL != m_pFriendListWidget->currentItem()){
+        QString strChatName = m_pFriendListWidget->currentItem()->text();
+        PrivateChat::getinstance().setChatName(strChatName);
+        if(PrivateChat::getinstance().isHidden()){
+            PrivateChat::getinstance().show();
+        }
+    }else{
+        QMessageBox::warning(this, "私聊", "选择私聊对象");
+    }
 }
