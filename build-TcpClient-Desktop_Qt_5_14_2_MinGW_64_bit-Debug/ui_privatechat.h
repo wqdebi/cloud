@@ -40,7 +40,6 @@ public:
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         showMsg_te = new QTextEdit(PrivateChat);
-        showMsg_te->setReadOnly(true);
         showMsg_te->setObjectName(QString::fromUtf8("showMsg_te"));
 
         verticalLayout->addWidget(showMsg_te);
@@ -65,6 +64,9 @@ public:
 
 
         retranslateUi(PrivateChat);
+
+        sendMsg_pb->setDefault(false);
+
 
         QMetaObject::connectSlotsByName(PrivateChat);
     } // setupUi
