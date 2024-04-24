@@ -61,6 +61,11 @@ QString TcpClient::loginName()
     return m_strLoginName;
 }
 
+QString TcpClient::curPath()
+{
+    return m_strCurPath;
+}
+
 
 void TcpClient::show_connect()
 {
@@ -80,6 +85,7 @@ void TcpClient::recvMsg()
     switch(pdu->UiMsgType){
     case ENUM_MSG_TYPE_REGIST_RESPOND:{
         if(0 == strcmp(pdu->caData, REGIST_OK)){
+            m_strCurPath = QString("./%1").arg(m_strLoginName);
             QMessageBox::information(this, "注册", REGIST_OK);
         }else if(0 == strcmp(pdu->caData, REGIST_FAILED)){
             QMessageBox::warning(this, "注册", REGIST_FAILED);
