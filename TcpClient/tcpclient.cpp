@@ -94,6 +94,7 @@ void TcpClient::recvMsg()
     }
     case ENUM_MSG_TYPE_LOGIN_RESPOND:{
         if(0 == strcmp(pdu->caData, LOGIN_OK)){
+            m_strCurPath = QString("./%1").arg(m_strLoginName);
             QMessageBox::information(this, "登录", LOGIN_OK);
             OpeWidget::getInstance().show();
             this->hide();
@@ -184,6 +185,10 @@ void TcpClient::recvMsg()
     }
     case ENUM_MSG_TYPE_GROUP_CHAT_REQUEST:{
         OpeWidget::getInstance().getFriend()->updateGroupMsg(pdu);
+        break;
+    }
+    case ENUM_MSG_TYPE_CREATE_DIR_RESPOND:{
+        QMessageBox::information(this, "创建文件夹", pdu->caData);
         break;
     }
     default:

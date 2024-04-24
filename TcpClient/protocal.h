@@ -28,6 +28,11 @@ using Uint = unsigned;
 
 #define UNKNOWN_ERROR "unknown error"                    // 通用未知错误
 
+#define DIR_NOT_EXIST "cur dir not exist"
+#define FILE_NAME_EXIST "file name exist"
+#define CREATE_DIR_OK "create dir ok"
+
+
 enum ENUM_MSG_TYPE
 {
     ENUM_MSG_TYPE_MIN = 0,

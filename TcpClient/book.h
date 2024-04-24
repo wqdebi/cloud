@@ -6,12 +6,16 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QListWidget>
+#include "protocal.h"
 
 class Book : public QWidget
 {
     Q_OBJECT
 public:
     explicit Book(QWidget *parent = nullptr);
+
+public slots:
+    void createDir();
 
 signals:
 

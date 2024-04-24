@@ -3,6 +3,7 @@
 #include "protocal.h"
 #include <string.h>
 #include "mytcpser.h"
+#include <QDir>
 
 
 MyTcpSocket::MyTcpSocket()
@@ -39,6 +40,8 @@ void MyTcpSocket::recvMsg()
         respdu->UiMsgType = ENUM_MSG_TYPE_REGIST_RESPOND;
         if(ret){
             strcpy(respdu->caData, REGIST_OK);
+            QDir dir;
+            qDebug() << "create dir: " << dir.mkdir(QString("./%1").arg(caName));
         }else{
             strcpy(respdu->caData, REGIST_FAILED);
         }
@@ -216,6 +219,38 @@ void MyTcpSocket::recvMsg()
             mytcpser::getInstance().resend(
                         onlineFriend.at(i).toStdString().c_str(), pdu);
         }
+        break;
+    }
+    case ENUM_MSG_TYPE_CREATE_DIR_REQUEST:{
+        QDir dir;
+        QString strCurPath = QString("%1").arg((char *)pdu->caMsg);
+        bool ret = dir.exists(strCurPath);
+        PDU *respdu;
+        if(ret){
+            char caNewDir[32] = {'\0'};
+            memcpy(caNewDir, pdu->caData + 32, 32);
+            QString strNewPath = strCurPath + "/" + caNewDir;
+            qDebug() << strNewPath;
+            ret = dir.exists(strNewPath);
+            if(ret){
+                respdu = mkPDU(0);
+                respdu->UiMsgType = ENUM_MSG_TYPE_CREATE_DIR_RESPOND;
+                strcpy(respdu->caData, FILE_NAME_EXIST);
+            }else{
+                dir.mkdir(strNewPath);
+                respdu = mkPDU(0);
+                respdu->UiMsgType = ENUM_MSG_TYPE_CREATE_DIR_RESPOND;
+                strcpy(respdu->caData, CREATE_DIR_OK);
+            }
+        }else{
+            respdu = mkPDU(0);
+            respdu->UiMsgType = ENUM_MSG_TYPE_CREATE_DIR_RESPOND;
+            qDebug() << strCurPath;
+            strcpy(respdu->caData, DIR_NOT_EXIST);
+        }
+        write((char *)respdu, respdu->uilPDULen);
+        free(respdu);
+        respdu = NULL;
         break;
     }
     default:

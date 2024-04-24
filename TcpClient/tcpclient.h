@@ -26,7 +26,7 @@ public:
     static TcpClient& getinstance();
     QTcpSocket &getTcpSocket();
     QString loginName();
-
+    QString curPath();
 
 private slots:
 //    void on_send_pb_clicked();
@@ -46,5 +46,7 @@ private:
     QTcpSocket m_tcpsocket;
 
     QString m_strLoginName;
+
+    QString m_strCurPath;
 };
 #endif // TCPCLIENT_H
