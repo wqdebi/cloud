@@ -776,6 +776,7 @@ release/moc_privatechat.cpp: ../TcpClient/privatechat.h \
 		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/include/QtCore/qfiledevice.h \
 		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/include/QtGui/qvector2d.h \
 		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/include/QtGui/qtouchdevice.h \
+		../TcpClient/protocal.h \
 		release/moc_predefs.h \
 		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/bin/moc.exe
 	C:\Qt\Qt5.14.2\5.14.2\mingw73_64\bin\moc.exe $(DEFINES) --include D:/cloud/build-TcpClient-Desktop_Qt_5_14_2_MinGW_64_bit-Debug/release/moc_predefs.h -IC:/Qt/Qt5.14.2/5.14.2/mingw73_64/mkspecs/win32-g++ -ID:/cloud/TcpClient -IC:/Qt/Qt5.14.2/5.14.2/mingw73_64/include -IC:/Qt/Qt5.14.2/5.14.2/mingw73_64/include/QtWidgets -IC:/Qt/Qt5.14.2/5.14.2/mingw73_64/include/QtGui -IC:/Qt/Qt5.14.2/5.14.2/mingw73_64/include/QtANGLE -IC:/Qt/Qt5.14.2/5.14.2/mingw73_64/include/QtNetwork -IC:/Qt/Qt5.14.2/5.14.2/mingw73_64/include/QtCore -I. -IC:/Qt/Qt5.14.2/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++ -IC:/Qt/Qt5.14.2/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Qt5.14.2/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++/backward -IC:/Qt/Qt5.14.2/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include -IC:/Qt/Qt5.14.2/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include-fixed -IC:/Qt/Qt5.14.2/Tools/mingw730_64/x86_64-w64-mingw32/include ..\TcpClient\privatechat.h -o release\moc_privatechat.cpp
@@ -1826,8 +1827,8 @@ release/privatechat.o: ../TcpClient/privatechat.cpp ../TcpClient/privatechat.h \
 		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/include/QtCore/qfiledevice.h \
 		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/include/QtGui/qvector2d.h \
 		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/include/QtGui/qtouchdevice.h \
-		ui_privatechat.h \
 		../TcpClient/protocal.h \
+		ui_privatechat.h \
 		../TcpClient/tcpclient.h \
 		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/include/QtCore/QFile \
 		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/include/QtNetwork/QTcpSocket \
@@ -2053,7 +2054,8 @@ release/tcpclient.o: ../TcpClient/tcpclient.cpp ../TcpClient/tcpclient.h \
 		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/include/QtNetwork/qhostaddress.h \
 		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/include/QtCore/QCoreApplication \
 		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/include/QtCore/qcoreapplication.h \
-		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/include/QtCore/qeventloop.h
+		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/include/QtCore/qeventloop.h \
+		../TcpClient/privatechat.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\tcpclient.o ..\TcpClient\tcpclient.cpp
 
 release/qrc_config.o: release/qrc_config.cpp 

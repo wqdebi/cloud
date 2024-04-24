@@ -18,6 +18,7 @@ public:
     explicit Friend(QWidget *parent = nullptr);
     void showAllOnlineUsr(PDU *pdu);
     void updateFriendList(PDU *pdu);
+    void updateGroupMsg(PDU *pdu);
 
     QString m_strSearchName;
 
@@ -31,6 +32,7 @@ public slots:
     void flushFriend();
     void delFriend();
     void privateChat();
+    void groupChat();
 
 private:
     QTextEdit *m_pShowMsgTE;

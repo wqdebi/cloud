@@ -208,6 +208,16 @@ void MyTcpSocket::recvMsg()
         memcpy(caPerName, pdu->caData + 32, 32);
         mytcpser::getInstance().resend(caPerName, pdu);
     }
+    case ENUM_MSG_TYPE_GROUP_CHAT_REQUEST:{
+        char caName[32] = {'\0'};
+        strncpy(caName, pdu->caData, 32);
+        QStringList onlineFriend = OPeDb::getInstance().handleFlushFriend(caName);
+        for(int i = 0; i < onlineFriend.size(); ++i){
+            mytcpser::getInstance().resend(
+                        onlineFriend.at(i).toStdString().c_str(), pdu);
+        }
+        break;
+    }
     default:
         break;
     }
