@@ -4,6 +4,7 @@
 #include <string.h>
 #include "mytcpser.h"
 #include <QDir>
+#include <QFileInfoList>
 
 
 MyTcpSocket::MyTcpSocket()
@@ -251,6 +252,17 @@ void MyTcpSocket::recvMsg()
         write((char *)respdu, respdu->uilPDULen);
         free(respdu);
         respdu = NULL;
+        break;
+    }
+    case ENUM_MSG_TYPE_FLUSH_DIR_REQUEST:{
+        char *pCurPath = new char[pdu->UiMsgType];
+        memcpy(pCurPath, pdu->caMsg, pdu->uiMsgLen);
+        QDir dir(pCurPath);
+        QFileInfoList fileInfoList = dir.entryInfoList();
+        for(int i = 0; i < fileInfoList.size(); ++i){
+            qDebug() << fileInfoList[i].fileName()
+                     << fileInfoList[i].size();
+        }
         break;
     }
     default:

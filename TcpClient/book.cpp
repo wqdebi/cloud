@@ -39,6 +39,8 @@ Book::Book(QWidget *parent) : QWidget(parent)
 
     connect(m_pCreateDirPB, SIGNAL(clicked(bool)),
             this, SLOT(createDir()));
+    connect(m_pFlushFilePB, SIGNAL(clicked(bool)),
+            this, SLOT(flushFile()));
 }
 
 void Book::createDir()
@@ -65,3 +67,18 @@ void Book::createDir()
     }
 
 }
+
+void Book::flushFile()
+{
+    QString strCurPath = TcpClient::getinstance().curPath();
+    PDU *pdu = mkPDU(strCurPath.size() + 1);
+    pdu->UiMsgType = ENUM_MSG_TYPE_FLUSH_DIR_REQUEST;
+    strncpy((char *)pdu->caMsg, strCurPath.toStdString().c_str(), strCurPath.size());
+    TcpClient::getinstance().getTcpSocket().write((char *)(pdu), pdu->uilPDULen);
+    free(pdu);
+    pdu = NULL;
+}
+
+
+
+

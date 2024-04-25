@@ -104,6 +104,11 @@ enum ENUM_MSG_TYPE
     ENUM_MSG_TYPE_MAX = 0x00ffffff, // uint最大值 0xffffffff
 };
 
+struct FileInfo{
+    char caFileName[32];
+    int iFileType;
+};
+
 struct PDU{
     Uint uilPDULen;
     Uint UiMsgType;
