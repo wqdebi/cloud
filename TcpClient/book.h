@@ -13,6 +13,7 @@ class Book : public QWidget
     Q_OBJECT
 public:
     explicit Book(QWidget *parent = nullptr);
+    void updateFileList(const PDU *pdu);
 
 public slots:
     void createDir();

@@ -16,6 +16,7 @@ private:
 public:
     static OpeWidget &getInstance();
     Friend *getFriend();
+    Book *getBook();
 
 signals:
 

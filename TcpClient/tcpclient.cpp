@@ -191,6 +191,10 @@ void TcpClient::recvMsg()
         QMessageBox::information(this, "创建文件夹", pdu->caData);
         break;
     }
+    case ENUM_MSG_TYPE_FLUSH_DIR_RESPOND:{
+        OpeWidget::getInstance().getBook()->updateFileList(pdu);
+        break;
+    }
     default:
         break;
     }

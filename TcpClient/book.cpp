@@ -43,6 +43,41 @@ Book::Book(QWidget *parent) : QWidget(parent)
             this, SLOT(flushFile()));
 }
 
+void Book::updateFileList(const PDU *pdu)
+{
+    if(NULL == pdu)
+    {
+        return ;
+    }
+    uint uiFileNum = pdu -> uiMsgLen / sizeof(FileInfo); // 文件数
+    FileInfo *pFileInfo = NULL; // 通过FileInfo指针依此访问caMsg中数据
+    QListWidgetItem *pItem = NULL;
+
+    m_pBoolListW -> clear(); // 清除文件列表原有数据
+    for(uint i = 0; i < uiFileNum; ++ i)
+    {
+        pFileInfo = (FileInfo*)(pdu -> caMsg) + i;
+        if(strcmp(pFileInfo -> caName, ".") == 0 || strcmp(pFileInfo -> caName, "..") == 0)
+        {   // 不显示 "." ".." 文件夹
+            continue;
+        }
+        pItem = new QListWidgetItem;
+
+        if(pFileInfo ->bIsDir) // 根据文件类型设置图标
+        {
+            pItem->setIcon(QIcon(QPixmap(":/dir.jpeg")));
+        }
+        else
+        {
+            pItem->setIcon(QIcon(QPixmap(":/file.jpeg")));
+        }
+        // 文件名 文件大小 最后修改时间  形式展示文件
+        pItem ->setText(QString("%1\t%2\t%3").arg(pFileInfo->caName)
+                        .arg(pFileInfo->uiSize).arg(pFileInfo->caTime));
+        m_pBoolListW->addItem(pItem);
+    }
+}
+
 void Book::createDir()
 {
     QString strNewDir = QInputDialog::getText(this, "新建文件夹", "新文件名字");

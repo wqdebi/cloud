@@ -30,6 +30,9 @@
 #define FILE_NAME_EXIST "file name exist"
 #define CREATE_DIR_OK "create dir ok"
 
+#define PATH_NOT_EXIST "path not exist"
+#define FLUSH_DIR_OK "flust dir ok"
+
 using Uint = unsigned;
 
 enum ENUM_MSG_TYPE
@@ -103,9 +106,12 @@ enum ENUM_MSG_TYPE
     ENUM_MSG_TYPE_MAX = 0x00ffffff, // uint最大值 0xffffffff
 };
 
-struct FileInfo{
-    char caFileName[32];
-    int iFileType;
+struct FileInfo
+{
+    char caName[32];     // 文件名字
+    bool bIsDir;         // 文件类型，是否为文件夹
+    long long uiSize;         // 文件大小
+    char caTime[128];    // 修改时间
 };
 
 struct PDU{
