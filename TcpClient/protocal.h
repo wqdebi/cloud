@@ -34,6 +34,9 @@ using Uint = unsigned;
 #define PATH_NOT_EXIST "path not exist"
 #define FLUSH_DIR_OK "flust dir ok"
 
+#define DEL_DIR_OK "delete dir ok"
+#define DEL_DIR_FAILED "delete dir failed"
+
 enum ENUM_MSG_TYPE
 {
     ENUM_MSG_TYPE_MIN = 0,
@@ -76,8 +79,11 @@ enum ENUM_MSG_TYPE
     ENUM_MSG_TYPE_FLUSH_DIR_REQUEST, // 刷新文件夹请求
     ENUM_MSG_TYPE_FLUSH_DIR_RESPOND, // 刷新文件夹回复
 
-    ENUM_MSG_TYPE_DELETE_FILE_REQUEST, // 刷新文件夹请求
-    ENUM_MSG_TYPE_DELETE_FILE_RESPOND, // 刷新文件夹回复
+    ENUM_MSG_TYPE_DEL_DIR_REQUEST, // 刷新文件夹请求
+    ENUM_MSG_TYPE_DEL_DIR_RESPOND, // 刷新文件夹回复
+
+    ENUM_MSG_TYPE_DELETE_FILE_REQUEST, // 刷新文件请求
+    ENUM_MSG_TYPE_DELETE_FILE_RESPOND, // 刷新文件回复
 
     ENUM_MSG_TYPE_RENAME_FILE_REQUEST, // 重命名文件夹请求
     ENUM_MSG_TYPE_RENAME_FILE_RESPOND, // 重命名文件夹回复

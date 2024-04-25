@@ -18,6 +18,7 @@ public:
 public slots:
     void createDir();
     void flushFile();
+    void delDir();
 
 signals:
 

@@ -8,6 +8,7 @@
 #include <QDateTime>
 
 
+
 MyTcpSocket::MyTcpSocket()
 {
     connect(this, SIGNAL(readyRead()),
@@ -290,6 +291,38 @@ void MyTcpSocket::recvMsg()
             }
         }
         respdu->UiMsgType = ENUM_MSG_TYPE_FLUSH_DIR_RESPOND;
+        write((char *)respdu, respdu->uilPDULen);
+        free(respdu);
+        respdu = NULL;
+        break;
+    }
+    case ENUM_MSG_TYPE_DEL_DIR_REQUEST:{
+        char caName[32] = {'\0'};
+        strcpy(caName, pdu->caData);
+        char *pPath = new char[pdu->uiMsgLen];
+        memcpy(pPath, pdu->caMsg, pdu->uiMsgLen);
+        QString strPath = QString("%1/%2").arg(pPath).arg(caName);
+        qDebug() << strPath;
+
+        QFileInfo fileInfo(strPath);
+        bool ret = false;
+        if(fileInfo.isDir()){
+            QDir dir;
+            dir.setPath(strPath);
+            ret = dir.removeRecursively();
+        }else if(fileInfo.isFile()){
+            ret = false;
+        }
+        PDU *respdu = NULL;
+        if(ret){
+            respdu = mkPDU(0);
+            respdu->UiMsgType = ENUM_MSG_TYPE_DEL_DIR_RESPOND;
+            memcpy(respdu->caData, DEL_DIR_OK, strlen(DEL_DIR_OK));
+        }else{
+            respdu = mkPDU(0);
+            respdu->UiMsgType = ENUM_MSG_TYPE_DEL_DIR_RESPOND;
+            memcpy(respdu->caData, DEL_DIR_FAILED, strlen(DEL_DIR_FAILED));
+        }
         write((char *)respdu, respdu->uilPDULen);
         free(respdu);
         respdu = NULL;
