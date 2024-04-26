@@ -37,6 +37,9 @@ using Uint = unsigned;
 #define DEL_DIR_OK "delete dir ok"
 #define DEL_DIR_FAILED "delete dir failed"
 
+#define RENAME_FILE_OK "rename file ok"
+#define RENAME_FILE_FAILED "rename file failed"
+
 enum ENUM_MSG_TYPE
 {
     ENUM_MSG_TYPE_MIN = 0,

@@ -19,6 +19,7 @@ public slots:
     void createDir();
     void flushFile();
     void delDir();
+    void renameFile();
 
 signals:
 
