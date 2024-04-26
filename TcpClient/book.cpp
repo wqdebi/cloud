@@ -2,6 +2,7 @@
 #include "tcpclient.h"
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QFileDialog>
 
 Book::Book(QWidget *parent) : QWidget(parent)
 {
@@ -41,16 +42,24 @@ Book::Book(QWidget *parent) : QWidget(parent)
 
     connect(m_pCreateDirPB, SIGNAL(clicked(bool)),
             this, SLOT(createDir()));
+
     connect(m_pFlushFilePB, SIGNAL(clicked(bool)),
             this, SLOT(flushFile()));
+
     connect(m_pDelDirPB, SIGNAL(clicked(bool)),
             this, SLOT(delDir()));
+
     connect(m_pRenamePB, SIGNAL(clicked(bool)),
             this, SLOT(renameFile()));
+
     connect(m_pBoolListW, SIGNAL(doubleClicked(QModelIndex)),
                 this, SLOT(entryDir(QModelIndex)));
+
     connect(m_pReturnPB, SIGNAL(clicked(bool)),
             this, SLOT(returnPre()));
+
+    connect(m_pUploadPB, SIGNAL(clicked(bool)),
+            this, SLOT(uploadFile()));
 }
 
 void Book::updateFileList(const PDU *pdu)
@@ -209,6 +218,21 @@ void Book::returnPre()
         clearEnterDir();
 
         flushFile();
+    }
+}
+
+void Book::uploadFile()
+{
+    QString strCurPath = TcpClient::getinstance().curPath();
+    QString strUploadFilePath = QFileDialog::getOpenFileName();
+    qDebug() << strUploadFilePath;
+
+    if(!strUploadFilePath.isEmpty()){
+        int index = strUploadFilePath.lastIndexOf('/');
+        QString strFileName = strUploadFilePath.right(strUploadFilePath.size() - index - 1);
+        qDebug() << "strFileName: " << strFileName;
+    }else{
+        QMessageBox::warning(this, "上传文件", "上传文件不能为空");
     }
 }
 

@@ -28,6 +28,8 @@ public slots:
     void entryDir(const QModelIndex &index);
     void returnPre();
 
+    void uploadFile();
+
 
 signals:
 
