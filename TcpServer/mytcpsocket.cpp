@@ -360,6 +360,66 @@ void MyTcpSocket::recvMsg()
 
         break;
     }
+    case ENUM_MSG_TYPE_ENTRY_DIR_REQUEST:{
+        char caEnterName[32] = {'\0'};
+        strncpy(caEnterName, pdu->caData, 32);
+
+        char *pPath = new char[pdu->uiMsgLen];
+        memcpy(pPath, pdu->caMsg, pdu->uiMsgLen);
+
+        QString strPath = QString("%1/%2").arg(pPath).arg(caEnterName);
+
+        QFileInfo fileInfo(strPath);
+
+        PDU *respdu = NULL;
+
+        if(fileInfo.isDir()){
+            QDir dir;
+            respdu = NULL;
+
+            if(!dir.exists(strPath)) // 请求文件夹不存在
+            {
+                respdu = mkPDU(0);
+                strncpy(respdu -> caData, PATH_NOT_EXIST, 32);
+            }
+            else // 存在
+            {
+                dir.setPath(strPath); // 设置为当前目录
+                QFileInfoList fileInfoList = dir.entryInfoList(); // 获取当前目录下所有文件
+                int iFileNum = fileInfoList.size();
+
+                respdu = mkPDU(sizeof(FileInfo) * iFileNum);
+                FileInfo *pFileInfo = NULL; // 创建一个文件信息结构体指针，方便之后遍历PDU空间来赋值
+                strncpy(respdu -> caData, FLUSH_DIR_OK, 32);
+
+                for(int i = 0; i < iFileNum; ++ i)
+                {
+                    pFileInfo = (FileInfo*)(respdu -> caMsg) + i; // 通过指针指向，直接修改PDU空间值，每次偏移FileInfo大小
+                    memcpy(pFileInfo -> caName, fileInfoList[i].fileName().toStdString().c_str(), fileInfoList[i].fileName().size());
+                    pFileInfo -> bIsDir = fileInfoList[i].isDir();
+                    pFileInfo -> uiSize = fileInfoList[i].size();
+                    QDateTime dtLastTime = fileInfoList[i].lastModified(); // 获取文件最后修改时间
+                    QString strLastTime = dtLastTime.toString("yyyy/MM/dd hh:mm");
+                    memcpy(pFileInfo -> caTime, strLastTime.toStdString().c_str(), strLastTime.size());
+                    qDebug() << "文件信息：" << pFileInfo -> caName << " " << pFileInfo -> bIsDir << " " << pFileInfo -> uiSize << " " << pFileInfo -> caTime;
+                }
+            }
+            respdu->UiMsgType = ENUM_MSG_TYPE_FLUSH_DIR_RESPOND;
+            write((char *)respdu, respdu->uilPDULen);
+            free(respdu);
+            respdu = NULL;
+        }else if(fileInfo.isFile()){
+            respdu = mkPDU(0);
+            respdu->UiMsgType = ENUM_MSG_TYPE_ENTRY_DIR_RESPOND;
+            strncpy(respdu->caData, ENTER_DIR_FAILED, strlen(ENTER_DIR_FAILED));
+
+            write((char *)respdu, respdu->uilPDULen);
+            free(respdu);
+            respdu = NULL;
+        }
+
+        break;
+    }
     default:
         break;
     }

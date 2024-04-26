@@ -39,6 +39,9 @@
 #define RENAME_FILE_OK "rename file ok"
 #define RENAME_FILE_FAILED "rename file failed"
 
+#define ENTER_DIR_FAILED "enter dir failed"
+
+
 
 using Uint = unsigned;
 

@@ -193,6 +193,14 @@ void TcpClient::recvMsg()
     }
     case ENUM_MSG_TYPE_FLUSH_DIR_RESPOND:{
         OpeWidget::getInstance().getBook()->updateFileList(pdu);
+        QString strEnterDir = OpeWidget::getInstance().getBook()->enterDir();
+        if(!strEnterDir.isEmpty()){
+            m_strCurPath = m_strCurPath + "/" + strEnterDir;
+            OpeWidget::getInstance().getBook()->clearEnterDir();
+            qDebug() << "enter dir" << m_strCurPath;
+        }else{
+
+        }
         break;
     }
     case ENUM_MSG_TYPE_DEL_DIR_RESPOND:{
@@ -200,8 +208,13 @@ void TcpClient::recvMsg()
         break;
     }
     case ENUM_MSG_TYPE_RENAME_FILE_RESPOND:{
-        qDebug() << 114514;
+//        qDebug() << 114514;
         QMessageBox::information(this, "重命名文件", pdu->caData);
+        break;
+    }
+    case ENUM_MSG_TYPE_ENTRY_DIR_RESPOND:{
+        OpeWidget::getInstance().getBook()->clearEnterDir();
+        QMessageBox::information(this, "进入文件夹", pdu->caData);
         break;
     }
     default:
