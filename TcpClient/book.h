@@ -26,6 +26,7 @@ public slots:
     void delDir();
     void renameFile();
     void entryDir(const QModelIndex &index);
+    void returnPre();
 
 
 signals:

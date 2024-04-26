@@ -28,6 +28,8 @@ public:
     QString loginName();
     QString curPath();
 
+    void setCurPath(QString strCurPath);
+
 private slots:
 //    void on_send_pb_clicked();
 

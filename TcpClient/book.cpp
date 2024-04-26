@@ -49,8 +49,8 @@ Book::Book(QWidget *parent) : QWidget(parent)
             this, SLOT(renameFile()));
     connect(m_pBoolListW, SIGNAL(doubleClicked(QModelIndex)),
                 this, SLOT(entryDir(QModelIndex)));
-
-
+    connect(m_pReturnPB, SIGNAL(clicked(bool)),
+            this, SLOT(returnPre()));
 }
 
 void Book::updateFileList(const PDU *pdu)
@@ -192,6 +192,24 @@ void Book::entryDir(const QModelIndex &index)
     TcpClient::getinstance().getTcpSocket().write((char *)(pdu), pdu->uilPDULen);
     free(pdu);
     pdu = NULL;
+}
+
+void Book::returnPre()
+{
+    QString strCurPath = TcpClient::getinstance().curPath();
+    QString strRootPath = "./" + TcpClient::getinstance().loginName();
+    if(strCurPath == strRootPath){
+        QMessageBox::warning(this, "返回上一级", "返回失败");
+    }else{
+        int index = strCurPath.lastIndexOf('/');
+        strCurPath.remove(index, strCurPath.size() - index);
+        qDebug() << "return: " << strCurPath;
+        TcpClient::getinstance().setCurPath(strCurPath);
+
+        clearEnterDir();
+
+        flushFile();
+    }
 }
 
 
