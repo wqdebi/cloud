@@ -41,7 +41,8 @@
 
 #define ENTER_DIR_FAILED "enter dir failed"
 
-
+#define UPLOAD_OK "upload ok"
+#define UPLOAD_FAILED "upload failed"
 
 using Uint = unsigned;
 

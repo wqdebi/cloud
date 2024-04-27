@@ -95,6 +95,7 @@ void TcpClient::recvMsg()
         }else if(0 == strcmp(pdu->caData, REGIST_FAILED)){
             QMessageBox::warning(this, "注册", REGIST_FAILED);
         }
+
         break;
     }
     case ENUM_MSG_TYPE_LOGIN_RESPOND:{
@@ -107,10 +108,12 @@ void TcpClient::recvMsg()
         }else if(0 == strcmp(pdu->caData, LOGIN_FAILED)){
             QMessageBox::warning(this, "登录", LOGIN_FAILED);
         }
+
         break;
     }
     case ENUM_MSG_TYPE_ONLINE_USERS_RESPOND:{
         OpeWidget::getInstance().getFriend()->showAllOnlineUsr(pdu);
+
         break;
     }
     case ENUM_MSG_TYPE_SEARCH_USER_RESPOND:{
@@ -124,6 +127,7 @@ void TcpClient::recvMsg()
             QString str = QString("%1: offline").arg(OpeWidget::getInstance().getFriend()->m_strSearchName);
             QMessageBox::information(this, "搜索", str);
         }
+
         break;
     }
     case ENUM_MSG_TYPE_ADD_FRIEND_REQUEST:{
@@ -147,34 +151,41 @@ void TcpClient::recvMsg()
         m_tcpsocket.write((char*)resPdu, resPdu->uilPDULen); // 发送给服务器消息，由服务器写入数据库并转发给用户
         free(resPdu);
         resPdu=nullptr;
+
         break;
     }
     case ENUM_MSG_TYPE_ADD_FRIEND_RESPOND:{
         QMessageBox::information(this, "添加好友", pdu->caData);
+
         break;
     }
     case ENUM_MSG_TYPE_ADD_FRIEND_AGREE: // 对方同意加好友
     {
         QMessageBox::information(this, "添加好友", QString("%1 已同意您的好友申请!").arg(pdu -> caData));
+
         break;
     }
     case ENUM_MSG_TYPE_ADD_FRIEND_REJECT: // 对方拒绝加好友
     {
         QMessageBox::information(this, "添加好友", QString("%1 已拒绝您的好友申请！").arg(pdu -> caData));
+
         break;
     }
     case ENUM_MSG_TYPE_FLUSH_FRIEND_RESPOND:{
         OpeWidget::getInstance().getFriend()->updateFriendList(pdu);
+
         break;
     }
     case ENUM_MSG_TYPE_DELETE_FRIEND_REQUEST:{
         char caname[32] = {'\0'};
         memcpy(caname, pdu->caData, 32);
         QMessageBox::information(this, "删除好友", QString("%1 删除了你").arg(caname));
+
         break;
     }
     case ENUM_MSG_TYPE_DELETE_FRIEND_RESPOND:{
         QMessageBox::information(this, "删除好友", "删除好友成功");
+
         break;
     }
     case ENUM_MSG_TYPE_PRIVATE_CHAT_REQUEST:{
@@ -186,14 +197,17 @@ void TcpClient::recvMsg()
         QString strSendName = perName;
         PrivateChat::getinstance().setChatName(strSendName);
         PrivateChat::getinstance().updataMsg(pdu);
+
         break;
     }
     case ENUM_MSG_TYPE_GROUP_CHAT_REQUEST:{
         OpeWidget::getInstance().getFriend()->updateGroupMsg(pdu);
+
         break;
     }
     case ENUM_MSG_TYPE_CREATE_DIR_RESPOND:{
         QMessageBox::information(this, "创建文件夹", pdu->caData);
+
         break;
     }
     case ENUM_MSG_TYPE_FLUSH_DIR_RESPOND:{
@@ -206,20 +220,30 @@ void TcpClient::recvMsg()
         }else{
 
         }
+
         break;
     }
     case ENUM_MSG_TYPE_DEL_DIR_RESPOND:{
         QMessageBox::information(this, "删除文件夹", pdu->caData);
+
         break;
     }
     case ENUM_MSG_TYPE_RENAME_FILE_RESPOND:{
 //        qDebug() << 114514;
         QMessageBox::information(this, "重命名文件", pdu->caData);
+
         break;
     }
     case ENUM_MSG_TYPE_ENTRY_DIR_RESPOND:{
         OpeWidget::getInstance().getBook()->clearEnterDir();
         QMessageBox::information(this, "进入文件夹", pdu->caData);
+
+        break;
+    }
+
+    case ENUM_MSG_TYPE_UPLOAD_FILE_RESPOND:{
+        QMessageBox::information(this, "上传文件", pdu->caData);
+
         break;
     }
     default:

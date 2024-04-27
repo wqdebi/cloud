@@ -8,6 +8,7 @@
 #include <QListWidget>
 #include "protocal.h"
 #include <QModelIndex>
+#include <QTimer>
 
 class Book : public QWidget
 {
@@ -30,6 +31,8 @@ public slots:
 
     void uploadFile();
 
+    void upLoadFileData();
+
 
 signals:
 
@@ -46,6 +49,9 @@ private:
     QPushButton* m_pShareFilePB;
 
     QString m_strEnterDir;
+    QString m_strUploadFilePath;
+
+    QTimer *m_pTimer;
 
 };
 

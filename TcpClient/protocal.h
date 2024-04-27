@@ -42,6 +42,9 @@ using Uint = unsigned;
 
 #define ENTER_DIR_FAILED "enter dir failed"
 
+#define UPLOAD_OK "upload ok"
+#define UPLOAD_FAILED "upload failed"
+
 enum ENUM_MSG_TYPE
 {
     ENUM_MSG_TYPE_MIN = 0,
