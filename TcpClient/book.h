@@ -21,6 +21,14 @@ public:
 
     QString enterDir();
 
+    void setDownloadStatus(bool s);
+
+    qint64 m_iTotal;
+    qint64 m_iRecved;
+
+    bool getDownloadStatus();
+    QString getSaveFilePath();
+
 public slots:
     void createDir();
     void flushFile();
@@ -31,7 +39,7 @@ public slots:
     void delRegFile();
     void uploadFile();
     void upLoadFileData();
-
+    void downloadFile();
 
 signals:
 
@@ -52,6 +60,8 @@ private:
 
     QTimer *m_pTimer;
 
+    QString m_strSaveFilePath;
+    bool m_bDownload;
 };
 
 #endif // BOOK_H

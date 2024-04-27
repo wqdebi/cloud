@@ -10,6 +10,8 @@ Book::Book(QWidget *parent) : QWidget(parent)
 
     m_pTimer = new QTimer;
 
+    m_bDownload = false;
+
     m_pBoolListW = new QListWidget;
     m_pReturnPB = new QPushButton("返回");
     m_pCreateDirPB = new QPushButton("创建文件夹");
@@ -68,6 +70,9 @@ Book::Book(QWidget *parent) : QWidget(parent)
 
     connect(m_pTimer, SIGNAL(timeout()),
             this, SLOT(upLoadFileData()));
+
+    connect(m_pDownloadPB, SIGNAL(clicked(bool)),
+            this, SLOT(downloadFile()));
 }
 
 void Book::updateFileList(const PDU *pdu)
@@ -113,6 +118,21 @@ void Book::clearEnterDir()
 QString Book::enterDir()
 {
     return m_strEnterDir;
+}
+
+void Book::setDownloadStatus(bool s)
+{
+    m_bDownload = s;
+}
+
+bool Book::getDownloadStatus()
+{
+    return m_bDownload;
+}
+
+QString Book::getSaveFilePath()
+{
+    return m_strSaveFilePath;
 }
 
 void Book::createDir()
@@ -304,6 +324,33 @@ void Book::upLoadFileData()
     }
     file.close();
     delete [] pBuffer;
+}
+
+void Book::downloadFile()
+{
+    QListWidgetItem *pItem = m_pBoolListW->currentItem();
+    if(NULL == pItem){
+        QMessageBox::warning(this, "下载文件", "请选择要下载的文件");
+    }else{
+       QString strCurPath = TcpClient::getinstance().curPath();
+       PDU *pdu = mkPDU(strCurPath.size() + 1);
+       pdu->UiMsgType = ENUM_MSG_TYPE_DOWNLOAD_FILE_REQUEST;
+       QString strFileName = pItem->text().split('\t')[0];
+       strcpy(pdu->caData, strFileName.toStdString().c_str());
+       memcpy(pdu->caMsg, strCurPath.toStdString().c_str(), strCurPath.size());
+
+       QString strSaveFilePath = QFileDialog::getSaveFileName();
+       if(strSaveFilePath.isEmpty()){
+           QMessageBox::warning(this, "下载文件", "保存路径不能为空");
+           m_strSaveFilePath.clear();
+       }else{
+           m_strSaveFilePath = strSaveFilePath;
+       }
+
+       TcpClient::getinstance().getTcpSocket().write((char *)(pdu), pdu->uilPDULen);
+       free(pdu);
+       pdu = NULL;
+    }
 }
 
 

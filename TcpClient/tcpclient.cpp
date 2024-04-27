@@ -79,6 +79,27 @@ void TcpClient::show_connect()
 
 void TcpClient::recvMsg()
 {
+    if(OpeWidget::getInstance().getBook()->getDownloadStatus()){
+        QByteArray buffer =  m_tcpsocket.readAll();
+
+        m_file.write(buffer);
+        Book *pBook = OpeWidget::getInstance().getBook();
+        pBook->m_iRecved += buffer.size();
+        if(pBook->m_iTotal == pBook->m_iRecved){
+            m_file.close();
+            pBook->m_iTotal = 0;
+            pBook->m_iRecved = 0;
+            pBook->setDownloadStatus(false);
+            QMessageBox::information(this, "下载文件", "下载文件完成");
+        }else if(pBook->m_iTotal < pBook->m_iRecved){
+            m_file.close();
+            pBook->m_iTotal = 0;
+            pBook->m_iRecved = 0;
+            pBook->setDownloadStatus(false);
+
+            QMessageBox::critical(this, "下载文件", "下载文件失败");
+        }
+    }
     qDebug() << m_tcpsocket.bytesAvailable();
     uint uiPDUlen = 0;
     m_tcpsocket.read((char *)&uiPDUlen, sizeof(uint));
@@ -249,6 +270,20 @@ void TcpClient::recvMsg()
     case ENUM_MSG_TYPE_UPLOAD_FILE_RESPOND:{
         QMessageBox::information(this, "上传文件", pdu->caData);
 
+        break;
+    }
+    case ENUM_MSG_TYPE_DOWNLOAD_FILE_RESPOND:{
+        qDebug() << pdu->caData;
+        char caFileName[32] = {'\0'};
+        sscanf(pdu->caData, "%s %lld", caFileName,
+               &(OpeWidget::getInstance().getBook()->m_iTotal));
+        if(strlen(caFileName) > 0 && OpeWidget::getInstance().getBook()->m_iTotal > 0){
+            OpeWidget::getInstance().getBook()->setDownloadStatus(true);
+            m_file.setFileName(OpeWidget::getInstance().getBook()->getSaveFilePath());
+            if(!m_file.open(QIODevice::WriteOnly)){
+                QMessageBox::warning(this, "下载文件", "下载文件失败");
+            }
+        }
         break;
     }
     default:
