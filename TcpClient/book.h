@@ -28,9 +28,8 @@ public slots:
     void renameFile();
     void entryDir(const QModelIndex &index);
     void returnPre();
-
+    void delRegFile();
     void uploadFile();
-
     void upLoadFileData();
 
 

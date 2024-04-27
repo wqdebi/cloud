@@ -36,6 +36,9 @@
 #define DEL_DIR_OK "delete dir ok"
 #define DEL_DIR_FAILED "delete dir failed"
 
+#define DEL_FILE_OK "delete file ok"
+#define DEL_FILE_FAILED "delete file failed"
+
 #define RENAME_FILE_OK "rename file ok"
 #define RENAME_FILE_FAILED "rename file failed"
 

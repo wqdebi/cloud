@@ -240,6 +240,11 @@ void TcpClient::recvMsg()
 
         break;
     }
+    case ENUM_MSG_TYPE_DELETE_FILE_RESPOND:{
+        QMessageBox::information(this, "删除文件", pdu->caData);
+
+        break;
+    }
 
     case ENUM_MSG_TYPE_UPLOAD_FILE_RESPOND:{
         QMessageBox::information(this, "上传文件", pdu->caData);

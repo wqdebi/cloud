@@ -424,6 +424,38 @@ void MyTcpSocket::recvMsg()
 
             break;
         }
+        case ENUM_MSG_TYPE_DELETE_FILE_REQUEST:{
+            char caName[32] = {'\0'};
+            strcpy(caName, pdu->caData);
+            char *pPath = new char[pdu->uiMsgLen];
+            memcpy(pPath, pdu->caMsg, pdu->uiMsgLen);
+            QString strPath = QString("%1/%2").arg(pPath).arg(caName);
+            qDebug() << strPath;
+
+            QFileInfo fileInfo(strPath);
+            bool ret = false;
+            if(fileInfo.isDir()){
+                ret = false;
+
+            }else if(fileInfo.isFile()){
+                QDir dir;
+                ret = dir.remove(strPath);
+            }
+            PDU *respdu = NULL;
+            if(ret){
+                respdu = mkPDU(0);
+                respdu->UiMsgType = ENUM_MSG_TYPE_DELETE_FILE_RESPOND;
+                memcpy(respdu->caData, DEL_FILE_OK, strlen(DEL_FILE_OK));
+            }else{
+                respdu = mkPDU(0);
+                respdu->UiMsgType = ENUM_MSG_TYPE_DELETE_FILE_RESPOND;
+                memcpy(respdu->caData, DEL_FILE_FAILED, strlen(DEL_FILE_FAILED));
+            }
+            write((char *)respdu, respdu->uilPDULen);
+            free(respdu);
+            respdu = NULL;
+            break;
+        }
         case ENUM_MSG_TYPE_UPLOAD_FILE_REQUEST:{
             char caFileName[32] = {'\0'};
             qint64 fileSize;
@@ -445,6 +477,7 @@ void MyTcpSocket::recvMsg()
 
             break;
         }
+
         default:
             break;
         }

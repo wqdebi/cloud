@@ -37,6 +37,9 @@ using Uint = unsigned;
 #define DEL_DIR_OK "delete dir ok"
 #define DEL_DIR_FAILED "delete dir failed"
 
+#define DEL_FILE_OK "delete file ok"
+#define DEL_FILE_FAILED "delete file failed"
+
 #define RENAME_FILE_OK "rename file ok"
 #define RENAME_FILE_FAILED "rename file failed"
 
@@ -87,8 +90,8 @@ enum ENUM_MSG_TYPE
     ENUM_MSG_TYPE_FLUSH_DIR_REQUEST, // 刷新文件夹请求
     ENUM_MSG_TYPE_FLUSH_DIR_RESPOND, // 刷新文件夹回复
 
-    ENUM_MSG_TYPE_DEL_DIR_REQUEST, // 刷新文件夹请求
-    ENUM_MSG_TYPE_DEL_DIR_RESPOND, // 刷新文件夹回复
+    ENUM_MSG_TYPE_DEL_DIR_REQUEST, // 删除文件夹请求
+    ENUM_MSG_TYPE_DEL_DIR_RESPOND, // 删除文件夹回复
 
     ENUM_MSG_TYPE_DELETE_FILE_REQUEST, // 刷新文件请求
     ENUM_MSG_TYPE_DELETE_FILE_RESPOND, // 刷新文件回复
