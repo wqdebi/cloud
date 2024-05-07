@@ -97,9 +97,10 @@ void TcpClient::recvMsg()
             pBook->m_iTotal = 0;
             pBook->m_iRecved = 0;
             pBook->setDownloadStatus(false);
-
+            m_file.setFileName("");
             QMessageBox::critical(this, "下载文件", "下载文件失败");
         }
+        QMessageBox::information(this, "下载文件", "okdfa ");
     }
     qDebug() << m_tcpsocket.bytesAvailable();
     uint uiPDUlen = 0;
