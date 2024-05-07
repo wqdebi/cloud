@@ -90,6 +90,7 @@ void TcpClient::recvMsg()
             pBook->m_iTotal = 0;
             pBook->m_iRecved = 0;
             pBook->setDownloadStatus(false);
+            m_file.setFileName("");
             QMessageBox::information(this, "下载文件", "下载文件完成");
         }else if(pBook->m_iTotal < pBook->m_iRecved){
             m_file.close();

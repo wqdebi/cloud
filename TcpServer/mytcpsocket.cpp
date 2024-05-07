@@ -19,7 +19,7 @@ MyTcpSocket::MyTcpSocket()
                          this, SLOT(recvMsg()));
     connect(this, SIGNAL(disconnected()),
             this, SLOT(clientOffline()));
-    connect(this, SIGNAL(timeout()),
+    connect(m_pTimer, SIGNAL(timeout()),
             this, SLOT(sendFileToClient()));
 }
 
@@ -568,6 +568,7 @@ void MyTcpSocket::sendFileToClient()
             break;
         }
     }
+    m_file.close(); // 关闭文件
     delete [] pData;
     pData = NULL;
     m_file.setFileName("");
