@@ -100,9 +100,10 @@ void TcpClient::recvMsg()
             m_file.setFileName("");
             QMessageBox::critical(this, "下载文件", "下载文件失败");
         }
-        QMessageBox::information(this, "下载文件", "okdfa ");
+        //QMessageBox::information(this, "下载文件", "okdfa ");
     }
-    qDebug() << m_tcpsocket.bytesAvailable();
+    //qDebug() << m_tcpsocket.bytesAvailable();
+    else{
     uint uiPDUlen = 0;
     m_tcpsocket.read((char *)&uiPDUlen, sizeof(uint));
     uint uiMsgLen = uiPDUlen - sizeof(PDU);
@@ -293,6 +294,7 @@ void TcpClient::recvMsg()
     }
     free(pdu);
     pdu = NULL;
+    }
 }
 
 
