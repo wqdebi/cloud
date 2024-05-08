@@ -29,6 +29,8 @@ public:
     bool getDownloadStatus();
     QString getSaveFilePath();
 
+    QString getShareFileName();
+
 public slots:
     void createDir();
     void flushFile();
@@ -40,6 +42,7 @@ public slots:
     void uploadFile();
     void upLoadFileData();
     void downloadFile();
+    void shareFile();
 
 signals:
 
@@ -62,6 +65,8 @@ private:
 
     QString m_strSaveFilePath;
     bool m_bDownload;
+
+    QString m_strShareFileName;
 };
 
 #endif // BOOK_H

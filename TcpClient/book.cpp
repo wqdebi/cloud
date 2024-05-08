@@ -3,6 +3,8 @@
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QFileDialog>
+#include "sharefile.h"
+#include "opewidget.h"
 
 Book::Book(QWidget *parent) : QWidget(parent)
 {
@@ -73,6 +75,9 @@ Book::Book(QWidget *parent) : QWidget(parent)
 
     connect(m_pDownloadPB, SIGNAL(clicked(bool)),
             this, SLOT(downloadFile()));
+    connect(m_pShareFilePB, SIGNAL(clicked(bool)),
+            this, SLOT(shareFile()));
+
 }
 
 void Book::updateFileList(const PDU *pdu)
@@ -133,6 +138,11 @@ bool Book::getDownloadStatus()
 QString Book::getSaveFilePath()
 {
     return m_strSaveFilePath;
+}
+
+QString Book::getShareFileName()
+{
+    return m_strShareFileName;
 }
 
 void Book::createDir()
@@ -350,6 +360,27 @@ void Book::downloadFile()
        TcpClient::getinstance().getTcpSocket().write((char *)(pdu), pdu->uilPDULen);
        free(pdu);
        pdu = NULL;
+    }
+}
+
+void Book::shareFile()
+{
+    QListWidgetItem *pItem = m_pBoolListW->currentItem();
+    if(NULL == pItem){
+        QMessageBox::warning(this, "分享文件", "请选择要分享的文件");
+        return;
+    }else{
+        m_strShareFileName = pItem->text().split('\t')[0];
+    }
+    Friend *pfriend = OpeWidget::getInstance().getFriend();
+    QListWidget *pFriendList = pfriend->getFriendList();
+
+//    for(int i = 0; i < pFriendList->count(); ++i){
+//        qDebug() << pFriendList->item(i)->text();
+//    }
+    ShareFile::getInstance().updateFiend(pFriendList);
+    if(ShareFile::getInstance().isHidden()){
+        ShareFile::getInstance().show();
     }
 }
 

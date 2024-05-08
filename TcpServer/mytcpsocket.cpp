@@ -507,6 +507,34 @@ void MyTcpSocket::recvMsg()
 
             break;
         }
+        case ENUM_MSG_TYPE_SHARE_FILE_REQUEST:{
+            char caSendName[32] = {'\0'};
+            int num = 0;
+            sscanf(pdu->caData, "%s%d", caSendName, &num);
+            int size = num * 32;
+            PDU *respdu = mkPDU(pdu->uiMsgLen - size);
+            respdu->UiMsgType = ENUM_MSG_TYPE_SHARE_FILE_NOTE;
+            strcpy(respdu->caData, caSendName);
+            memcpy(respdu->caMsg, (char *)(pdu->caMsg) + size, pdu->uiMsgLen-size);
+
+            char caRecvName[32] = {'\0'};
+            for(int i = 0; i < num; ++i){
+                memcpy(caRecvName, (char *)(pdu->caMsg) + i * 32, 32);
+                mytcpser::getInstance().resend(caRecvName, respdu);
+            }
+            free(respdu);
+            respdu = NULL;
+
+            respdu = mkPDU(0);
+            respdu->UiMsgType = ENUM_MSG_TYPE_SHARE_FILE_RESPOND;
+            strcpy(respdu->caData, "share file ok!");
+            write((char *)respdu, respdu->uilPDULen);
+
+            free(respdu);
+            respdu = NULL;
+
+            break;
+        }
         default:
             break;
         }
