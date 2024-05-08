@@ -45,7 +45,7 @@ ShareFile::ShareFile(QWidget *parent) : QWidget(parent)
             this, SLOT(okShare()));
 
     connect(m_pCanclePB, SIGNAL(clicked(bool)),
-            this, SLOT(cancelShare()));
+            this, SLOT(cancleShare()));
 }
 
 ShareFile &ShareFile::getInstance()
@@ -121,7 +121,8 @@ void ShareFile::okShare()
     int j = 0;
     for(int i = 0; i < cbList.size(); ++i){
         if(cbList[i]->isChecked()){
-            memcpy((char *)(pdu->caMsg) + j * 32, cbList[i]->text().toStdString().c_str(), 32);
+            memcpy((char *)(pdu->caMsg) + j * 32, cbList[i]->text().toStdString().c_str(),
+                   cbList[i]->text().size());
             ++j;
         }
     }

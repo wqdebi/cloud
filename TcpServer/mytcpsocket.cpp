@@ -28,6 +28,34 @@ QString MyTcpSocket::getName()
     return m_strName;
 }
 
+void MyTcpSocket::copyDir(QString strSrcDir, QString strDestDir)
+{
+    QDir dir;
+    dir.mkdir(strDestDir);
+    dir.setPath(strSrcDir);
+
+    QString srcTmp;
+    QString destTmp;
+
+    QFileInfoList fileInfoList = dir.entryInfoList();
+    for(int i = 0; i < fileInfoList.size(); ++i){
+        if(fileInfoList[i].isFile()){
+            fileInfoList[i].fileName();
+            srcTmp = strSrcDir + '/' + fileInfoList[i].fileName();
+            destTmp = strDestDir + '/' + fileInfoList[i].fileName();
+            QFile::copy(srcTmp, destTmp);
+        }else if(fileInfoList[i].isDir()){
+            if(QString(".") == fileInfoList[i].fileName() ||
+                    QString("..") == fileInfoList[i].fileName()){
+                continue;
+            }
+            srcTmp = strSrcDir + '/' + fileInfoList[i].fileName();
+            destTmp = strDestDir + '/' + fileInfoList[i].fileName();
+            copyDir(srcTmp, destTmp);
+        }
+    }
+}
+
 void MyTcpSocket::recvMsg()
 {
     if(!m_bUpload){
@@ -533,6 +561,24 @@ void MyTcpSocket::recvMsg()
             free(respdu);
             respdu = NULL;
 
+            break;
+        }
+        case ENUM_MSG_TYPE_SHARE_FILE_NOTE_RESPOND:{
+            QString strRecvPath = QString("./%1").arg(pdu->caData);
+            QString strShareFilePath = QString("%1").arg((char *)(pdu->caMsg));
+
+            int index = strShareFilePath.lastIndexOf('/');
+            QString strFileName = strShareFilePath.right(strShareFilePath.size()-index-1);
+            strRecvPath = strRecvPath + '/' + strFileName;
+
+
+            QFileInfo fileInfo(strShareFilePath);
+            if(fileInfo.isFile()){
+                QFile::copy(strShareFilePath, strRecvPath);
+            }else if(fileInfo.isDir()){
+
+                copyDir(strShareFilePath, strRecvPath);
+            }
             break;
         }
         default:
