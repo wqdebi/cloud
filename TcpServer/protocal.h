@@ -47,6 +47,10 @@
 #define UPLOAD_OK "upload ok"
 #define UPLOAD_FAILED "upload failed"
 
+#define MOVE_FILE_OK "move file ok"
+#define MOVE_FILE_OK_FAILED "move file failed"
+#define COMMON_ERR "system is busy"
+
 using Uint = unsigned;
 
 enum ENUM_MSG_TYPE

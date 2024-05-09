@@ -313,6 +313,10 @@ void TcpClient::recvMsg()
         delete [] pPath;
         break;
     }
+    case ENUM_MSG_TYPE_MOVE_FILE_RESPOND:{
+        QMessageBox::information(this, "移动文件", pdu->caData);
+        break;
+    }
     default:
         break;
     }

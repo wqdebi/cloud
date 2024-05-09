@@ -48,6 +48,10 @@ using Uint = unsigned;
 #define UPLOAD_OK "upload ok"
 #define UPLOAD_FAILED "upload failed"
 
+#define MOVE_FILE_OK "move file ok"
+#define MOVE_FILE_OK_FAILED "move file failed"
+#define COMMON_ERR "system is busy"
+
 enum ENUM_MSG_TYPE
 {
     ENUM_MSG_TYPE_MIN = 0,
